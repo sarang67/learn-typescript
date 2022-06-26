@@ -17,6 +17,7 @@ console.log("start");
 /* HTML part ends here */
 
 import { renderTodos } from "./utils";
+import * as fromStore from "./store";
 
 const input = document.querySelector("input") as HTMLInputElement;
 const button = document.querySelector("button") as HTMLButtonElement;
@@ -43,3 +44,12 @@ todoList.addEventListener("click", function (event) {
     console.log(target);
   }
 });
+
+const store = new fromStore.Store(
+  {},
+  {
+    todos: [{ label: "Eat Pizza", complete: false }],
+  }
+);
+
+console.log(store.value);
