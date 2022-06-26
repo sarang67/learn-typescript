@@ -37,14 +37,16 @@ button.addEventListener(
 
     const payload = { label: input.value, complete: false };
 
-    store.dispatch({
-      type: "ADD_TODO",
-      payload,
-    });
+    // store.dispatch({
+    //   type: fromStore.ADD_TODO,
+    //   payload,
+    // });
+
+    store.dispatch(new fromStore.AddTodo(payload));
 
     console.log(payload);
     console.log(store.value);
-
+    renderTodos(store.value.todos.data); // will be refactored with subscription
     input.value = "";
   },
   false
@@ -54,5 +56,10 @@ todoList.addEventListener("click", function (event) {
   const target = event.target as HTMLButtonElement;
   if (target.nodeName.toLowerCase() === "button") {
     console.log(target);
+    const todo = JSON.parse(target.getAttribute("data-todo"));
+    console.log(todo);
+    store.dispatch(new fromStore.RemoveTodo(todo));
+    renderTodos(store.value.todos.data); // will be refactored with subscription
+    console.log(store.value);
   }
 });
