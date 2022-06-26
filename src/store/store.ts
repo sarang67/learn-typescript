@@ -1,5 +1,5 @@
 export class Store {
-  private subscibers: Function[];
+  private subscibers: Function[] = [];
   private reducers: { [key: string]: Function };
   private state: { [key: string]: any };
 
@@ -14,6 +14,19 @@ export class Store {
 
   dispatch(action) {
     this.state = this.reduce(this.state, action);
+    this.notify();
+  }
+
+  subscribe(fn) {
+    this.subscibers = [...this.subscibers, fn];
+    this.notify();
+    return () => {
+      this.subscibers = this.subscibers.filter((sub) => sub !== fn);
+    };
+  }
+
+  notify() {
+    this.subscibers.forEach((fn) => fn(this.value));
   }
 
   reduce(state, action) {
@@ -26,10 +39,6 @@ export class Store {
     return newState;
   }
 }
-
-
-
-
 
 /*
 1) store state
@@ -53,17 +62,5 @@ const reducers = {
   todos: reducer(){},
   luggage:reducer(){}
 };
-
-
-
-
  
-*/
-
-/*
-
-
-
-
-};
 */

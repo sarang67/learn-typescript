@@ -44,9 +44,9 @@ button.addEventListener(
 
     store.dispatch(new fromStore.AddTodo(payload));
 
-    console.log(payload);
-    console.log(store.value);
-    renderTodos(store.value.todos.data); // will be refactored with subscription
+    //   console.log(payload);
+    //   console.log(store.value);
+    // renderTodos(store.value.todos.data); // will be refactored with subscription
     input.value = "";
   },
   false
@@ -57,9 +57,19 @@ todoList.addEventListener("click", function (event) {
   if (target.nodeName.toLowerCase() === "button") {
     console.log(target);
     const todo = JSON.parse(target.getAttribute("data-todo"));
-    console.log(todo);
+    // console.log(todo);
     store.dispatch(new fromStore.RemoveTodo(todo));
-    renderTodos(store.value.todos.data); // will be refactored with subscription
-    console.log(store.value);
+    // renderTodos(store.value.todos.data); // will be refactored with subscription
+    // console.log(store.value);
   }
 });
+
+// subscription2
+const unsubscribe = store.subscribe((state) => {
+  renderTodos(state.todos.data);
+});
+
+destroy.addEventListener("click", unsubscribe);
+
+// subscription1
+store.subscribe((param) => console.log("state:::", param));
